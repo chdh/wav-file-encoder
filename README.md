@@ -1,2 +1,15 @@
 # wav-file-encoder
-A simple encoder for WAV audio files
+
+A simple encoder for [WAV](https://en.wikipedia.org/wiki/WAV) audio files.
+
+**NPM package**: [wav-file-encoder](https://www.npmjs.com/package/wav-file-encoder)<br>
+**Online demo**: [www.source-code.biz/snippets/typescript/wavFileEncoder](http://www.source-code.biz/snippets/typescript/wavFileEncoder)<br>
+**Example of how to use it**: [github.com/chdh/wav-file-encoder/tree/master/example](https://github.com/chdh/wav-file-encoder/tree/master/example)
+
+## API
+
+`encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileType) : ArrayBuffer`
+* `audioBuffer`: An [AudioBuffer](https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer) that contains the audio data.
+* `wavFileType`: `WavFileType.int16` (0) for 16 bit signed integer, `WavFileType.float32` (1) for 32 bit float.
+* Return value: An [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) that
+  contains the raw data bytes of the generated WAV file.

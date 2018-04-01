@@ -1,0 +1,23 @@
+{
+   "compilerOptions": {
+      "alwaysStrict": true,
+      "declaration": true,
+      "lib": ["ES6", "DOM"],
+      "module": "ES6",
+      "moduleResolution": "node",
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "outDir": "dist",
+      "removeComments": true,
+      "strictFunctionTypes": true,
+      "strictNullChecks": true,
+      "target": "ES6"
+   },
+   "include": [
+      "src/**/*"
+   ]
+}

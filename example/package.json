@@ -1,0 +1,11 @@
+{
+   "private": true,
+   "dependencies": {},
+   "devDependencies": {
+      "rollup-plugin-node-resolve": "^3.3.0",
+      "wav-file-encoder": "^1.0.0"
+   },
+   "scripts": {
+      "build": "tsc && rollup -c"
+   }
+}

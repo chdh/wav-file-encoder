@@ -1,0 +1,29 @@
+{
+   "name": "wav-file-encoder",
+   "version": "1.0.0",
+   "description": "A simple encoder for WAV audio files",
+   "types": "dist/WavFileEncoder.d.ts",
+   "module": "dist/WavFileEncoder.js",
+   "keywords": [
+      "WAV",
+      "WAV file",
+      "wave file",
+      "audio",
+      "encoder"
+   ],
+   "license": "MIT",
+   "homepage": "http://www.source-code.biz/snippets/typescript/wavFileEncoder",
+   "repository": "github:chdh/wav-file-encoder",
+   "contributors": [
+      {
+         "name": "Christian d'Heureuse",
+         "email": "chdh@inventec.ch"
+      }
+   ],
+   "scripts": {
+      "build": "tsc"
+   },
+   "files": [
+      "dist/*"
+   ]
+}
