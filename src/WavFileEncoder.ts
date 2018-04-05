@@ -71,9 +71,9 @@ export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileTyp
 
    // When converting PCM sample values from float to signed 16 bit, the midpoint must remain 0.
    // There are several options for the 16-bit quantization:
-   //  A: [-1 .. 1]       ==> [-32768 .. 32767]   asymetric
-   //  B: [-1 .. 1]       ==> [-32767 .. 32767]   symetric, bit patterns are distorted
-   //  C: [-1 .. 0.99997] ==> [-32768 .. 32767]   symetric, +1 value is clipped
+   //  Option A: [-1 .. 1]       ==> [-32768 .. 32767]   asymetric
+   //  Option B: [-1 .. 1]       ==> [-32767 .. 32767]   symetric, bit patterns are distorted
+   //  Option C: [-1 .. 0.99997] ==> [-32768 .. 32767]   symetric, +1 value is clipped
    function convertFloatSampleToInt16 (v: number) {
       // Option A:
       //   return v < 0 ?
