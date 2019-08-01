@@ -1,9 +1,10 @@
 {
    "name": "wav-file-encoder",
-   "version": "1.0.0",
+   "version": "1.0.1",
    "description": "A simple encoder for WAV audio files",
    "types": "dist/WavFileEncoder.d.ts",
    "module": "dist/WavFileEncoder.js",
+   "type": "module",
    "keywords": [
       "WAV",
       "WAV file",
@@ -17,7 +18,8 @@
    "contributors": [
       {
          "name": "Christian d'Heureuse",
-         "email": "chdh@inventec.ch"
+         "email": "chdh@inventec.ch",
+         "url": "http://www.source-code.biz"
       }
    ],
    "scripts": {

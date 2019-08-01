@@ -5,16 +5,19 @@ export const enum WavFileType {
 export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileType) : ArrayBuffer {
    let bitsPerSample: number;
    let formatCode: number;
+   let fmtChunkSize: number;
    let writeSampleData: () => void;
    switch (wavFileType) {
       case WavFileType.int16: {
          bitsPerSample = 16;
          formatCode = 1;                                   // WAVE_FORMAT_PCM
+         fmtChunkSize = 16;
          writeSampleData = writeSampleData_int16;
          break; }
       case WavFileType.float32: {
          bitsPerSample = 32;
          formatCode = 3;                                   // WAVE_FORMAT_IEEE_FLOAT
+         fmtChunkSize = 18;                                // 2 bytes more to include cbSize field (extension size)
          writeSampleData = writeSampleData_float32;
          break; }
       default: {
@@ -25,7 +28,7 @@ export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileTyp
    const bytesPerSample = Math.ceil(bitsPerSample / 8);
    const bytesPerFrame = numberOfChannels * bytesPerSample;
    const bytesPerSec = sampleRate * numberOfChannels * bytesPerSample;
-   const headerLength = 44;
+   const headerLength = 20 + fmtChunkSize + 8;
    const sampleDataLength = numberOfChannels * numberOfFrames * bytesPerSample;
    const fileLength = headerLength + sampleDataLength;
    const arrayBuffer = new ArrayBuffer(fileLength);
@@ -42,15 +45,18 @@ export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileTyp
       dataView.setUint32(4, fileLength - 8, true);         // chunk size
       setString(8, "WAVE");                                // WAVEID
       setString(12, "fmt ");                               // chunk ID
-      dataView.setUint32(16, 16, true);                    // chunk size
+      dataView.setUint32(16, fmtChunkSize, true);          // chunk size
       dataView.setUint16(20, formatCode, true);            // wFormatTag
       dataView.setUint16(22, numberOfChannels, true);      // nChannels
       dataView.setUint32(24, sampleRate, true);            // nSamplesPerSec
       dataView.setUint32(28, bytesPerSec, true);           // nAvgBytesPerSec
       dataView.setUint16(32, bytesPerFrame, true);         // nBlockAlign
       dataView.setUint16(34, bitsPerSample, true);         // wBitsPerSample
-      setString(36, "data");                               // chunk ID
-      dataView.setUint32(40, sampleDataLength, true); }    // chunk size
+      if (fmtChunkSize > 16) {
+         dataView.setUint16(36, 0, true); }                // cbSize (extension size)
+      const p = 20 + fmtChunkSize;
+      setString(p, "data");                                // chunk ID
+      dataView.setUint32(p + 4, sampleDataLength, true); } // chunk size
 
    function writeSampleData_int16() {
       let offs = headerLength;

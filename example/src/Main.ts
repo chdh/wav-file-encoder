@@ -11,7 +11,7 @@ interface UiParms {
 function getRadioButtonGroupValue (name: string) : string | undefined {
    const a = document.getElementsByName(name);
    for (let i = 0; i < a.length; i++) {
-      let e = <HTMLInputElement>a[i];
+      const e = <HTMLInputElement>a[i];
       if (e.checked) {
          return e.value; }}
    return undefined; }
@@ -30,7 +30,7 @@ function getUiParms() : UiParms | undefined {
          !channelsElement.reportValidity()  ||
          !sampleRateElement.reportValidity() ) {
       return; }
-   let uiParms = <UiParms>{};
+   const uiParms = <UiParms>{};
    uiParms.frequency  = frequencyElement.valueAsNumber;
    uiParms.amplitude  = amplitudeElement.valueAsNumber;
    uiParms.duration   = durationElement.valueAsNumber;
@@ -51,11 +51,11 @@ function generateSineWaveSignal (frequency: number, amplitude: number, duration:
    return audioBuffer; }
 
 function openSaveAsDialog (blob: Blob, fileName: string) {
-   let url = URL.createObjectURL(blob);
-   let element = document.createElement("a");
+   const url = URL.createObjectURL(blob);
+   const element = document.createElement("a");
    element.href = url;
    element.download = fileName;
-   let clickEvent = new MouseEvent("click");
+   const clickEvent = new MouseEvent("click");
    element.dispatchEvent(clickEvent);
    setTimeout(() => URL.revokeObjectURL(url), 60000);
    (<any>document).dummySaveAsElementHolder = element; }   // to prevent garbage collection
