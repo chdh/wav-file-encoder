@@ -3,6 +3,21 @@ export const enum WavFileType {
    float32 }                                               // 32 bit float within the range -1 to +1
 
 export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileType) : ArrayBuffer {
+   const numberOfChannels = audioBuffer.numberOfChannels;
+   const numberOfFrames = audioBuffer.length;
+   const sampleRate = audioBuffer.sampleRate;
+   const channelData: Float32Array[] = Array(numberOfChannels);
+   for (let channelNo = 0; channelNo < numberOfChannels; channelNo++) {
+       channelData[channelNo] = audioBuffer.getChannelData(channelNo);
+       if (channelData[channelNo].length != numberOfFrames) {
+          throw new Error("Unexpected channel data array size."); }}
+   return encodeWavFile2(channelData, sampleRate, wavFileType); }
+
+export function encodeWavFile2 (channelData: ArrayLike<number>[], sampleRate: number, wavFileType: WavFileType) : ArrayBuffer {
+   const numberOfChannels = channelData.length;
+   if (numberOfChannels < 1) {
+      throw new Error("No audio channels."); }
+   const numberOfFrames = channelData[0].length;
    let bitsPerSample: number;
    let formatCode: number;
    let fmtChunkSize: number;
@@ -22,9 +37,6 @@ export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileTyp
          break; }
       default: {
          throw new Error(); }}
-   const numberOfChannels = audioBuffer.numberOfChannels;
-   const numberOfFrames = audioBuffer.length;
-   const sampleRate = audioBuffer.sampleRate;
    const bytesPerSample = Math.ceil(bitsPerSample / 8);
    const bytesPerFrame = numberOfChannels * bytesPerSample;
    const bytesPerSec = sampleRate * numberOfChannels * bytesPerSample;
@@ -33,9 +45,6 @@ export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileTyp
    const fileLength = headerLength + sampleDataLength;
    const arrayBuffer = new ArrayBuffer(fileLength);
    const dataView = new DataView(arrayBuffer);
-   const channelData: Float32Array[] = Array(numberOfChannels);
-   for (let channelNo = 0; channelNo < numberOfChannels; channelNo++) {
-       channelData[channelNo] = audioBuffer.getChannelData(channelNo); }
    writeWavFileHeader();
    writeSampleData();
    return arrayBuffer;
