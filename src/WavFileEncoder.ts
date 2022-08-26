@@ -104,3 +104,6 @@ export function encodeWavFile2 (channelData: ArrayLike<number>[], sampleRate: nu
          dataView.setUint8(offset + p, value.charCodeAt(p)); }}
 
    }
+
+declare global {
+   interface AudioBuffer {} }                              // to remove DOM type library dependency for users of this package

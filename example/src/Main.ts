@@ -41,8 +41,7 @@ function getUiParms() : UiParms | undefined {
 
 function generateSineWaveSignal (frequency: number, amplitude: number, duration: number, channels: number, sampleRate: number) : AudioBuffer {
    const length = duration * sampleRate;
-   const audioBuffer: AudioBuffer = new (<any>AudioBuffer)({length, numberOfChannels: channels, sampleRate});
-      // <any> is used because the constructor declaration is missing in TypeScript 2.8.
+   const audioBuffer: AudioBuffer = new AudioBuffer({length, numberOfChannels: channels, sampleRate});
    const omega = 2 * Math.PI * frequency;
    for (let channel = 0; channel < channels; channel++) {
       const channelData = audioBuffer.getChannelData(channel);
@@ -79,8 +78,3 @@ function startup() {
    document.getElementById("generateWavFileButton")!.addEventListener("click", generateWavFileButton_click); }
 
 document.addEventListener("DOMContentLoaded", startup);
-
-// Missing declaration for TypeScript 2.8:
-declare global {
-   interface HTMLInputElement {
-      reportValidity(): boolean; }}
