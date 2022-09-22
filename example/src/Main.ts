@@ -64,7 +64,7 @@ function generateWavFile() {
    if (!uiParms) {
       return; }
    const audioBuffer = generateSineWaveSignal(uiParms.frequency, uiParms.amplitude, uiParms.duration, uiParms.channels, uiParms.sampleRate);
-   const wavFileData = WavFileEncoder.encodeWavFile(audioBuffer, uiParms.wavFileType);
+   const wavFileData = WavFileEncoder.encodeWavFileFromAudioBuffer(audioBuffer, uiParms.wavFileType);
    const blob = new Blob([wavFileData], {type: "audio/wav"});
    openSaveAsDialog(blob, "test.wav"); }
 

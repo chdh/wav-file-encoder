@@ -2,7 +2,7 @@ export const enum WavFileType {
    int16,                                                  // 16 bit signed integer
    float32 }                                               // 32 bit float within the range -1 to +1
 
-export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileType) : ArrayBuffer {
+export function encodeWavFileFromAudioBuffer (audioBuffer: AudioBuffer, wavFileType: WavFileType) : ArrayBuffer {
    const numberOfChannels = audioBuffer.numberOfChannels;
    const numberOfFrames = audioBuffer.length;
    const sampleRate = audioBuffer.sampleRate;
@@ -11,9 +11,9 @@ export function encodeWavFile (audioBuffer: AudioBuffer, wavFileType: WavFileTyp
        channelData[channelNo] = audioBuffer.getChannelData(channelNo);
        if (channelData[channelNo].length != numberOfFrames) {
           throw new Error("Unexpected channel data array size."); }}
-   return encodeWavFile2(channelData, sampleRate, wavFileType); }
+   return encodeWavFileFromArrays(channelData, sampleRate, wavFileType); }
 
-export function encodeWavFile2 (channelData: ArrayLike<number>[], sampleRate: number, wavFileType: WavFileType) : ArrayBuffer {
+export function encodeWavFileFromArrays (channelData: ArrayLike<number>[], sampleRate: number, wavFileType: WavFileType) : ArrayBuffer {
    const numberOfChannels = channelData.length;
    if (numberOfChannels < 1) {
       throw new Error("No audio channels."); }
@@ -107,3 +107,6 @@ export function encodeWavFile2 (channelData: ArrayLike<number>[], sampleRate: nu
 
 declare global {
    interface AudioBuffer {} }                              // to remove DOM type library dependency for users of this package
+
+// Alias function names for backward compatibility with package versions < 1.0.4.
+export {encodeWavFileFromAudioBuffer as encodeWavFile, encodeWavFileFromArrays as encodeWavFile2};
