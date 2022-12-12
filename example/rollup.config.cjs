@@ -1,6 +1,6 @@
-import nodeResolve from "@rollup/plugin-node-resolve";
+const nodeResolve = require("@rollup/plugin-node-resolve");
 
-export default {
+module.exports = {
    input: "tempBuild/Main.js",
    output: {
       file: "app.js",
