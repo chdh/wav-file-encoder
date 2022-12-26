@@ -4,7 +4,8 @@ A simple encoder for [WAV](https://en.wikipedia.org/wiki/WAV) audio files.
 
 **NPM package**: [wav-file-encoder](https://www.npmjs.com/package/wav-file-encoder)<br>
 **Online demo**: [www.source-code.biz/snippets/typescript/wavFileEncoder](http://www.source-code.biz/snippets/typescript/wavFileEncoder)<br>
-**Example of how to use it**: [github.com/chdh/wav-file-encoder/tree/master/example](https://github.com/chdh/wav-file-encoder/tree/master/example)
+**Example of how to use it**: [github.com/chdh/wav-file-encoder/tree/master/example](https://github.com/chdh/wav-file-encoder/tree/master/example)<br>
+**Compagnion package**: [wav-file-decoder](https://www.npmjs.com/package/wav-file-decoder)
 
 ## API
 

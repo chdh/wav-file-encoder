@@ -89,7 +89,7 @@ export function encodeWavFileFromArrays (channelData: ArrayLike<number>[], sampl
    //  Option A: [-1 .. 1]       ==> [-32768 .. 32767]   asymetric
    //  Option B: [-1 .. 1]       ==> [-32767 .. 32767]   symetric, bit patterns are distorted
    //  Option C: [-1 .. 0.99997] ==> [-32768 .. 32767]   symetric, +1 value is clipped
-   function convertFloatSampleToInt16 (v: number) {
+   function convertFloatSampleToInt16 (v: number) : number {
       // Option A:
       //   return v < 0 ?
       //      Math.max(-32768, Math.round(v * 32768)) :
