@@ -1,4 +1,5 @@
 import * as WavFileEncoder from "wav-file-encoder";
+import {catchError, openSaveAsDialog, getRadioButtonGroupValue} from "./Utils.js";
 
 interface UiParms {
    frequency:      number;
@@ -7,14 +8,6 @@ interface UiParms {
    channels:       number;
    sampleRate:     number;
    wavFileType:    WavFileEncoder.WavFileType; }
-
-function getRadioButtonGroupValue (name: string) : string | undefined {
-   const a = document.getElementsByName(name);
-   for (let i = 0; i < a.length; i++) {
-      const e = <HTMLInputElement>a[i];
-      if (e.checked) {
-         return e.value; }}
-   return undefined; }
 
 // When a parameter is invalid, an error message is displayed, the cursor is placed within
 // the affected field and the return value is undefined.
@@ -25,17 +18,17 @@ function getUiParms() : UiParms | undefined {
    const channelsElement   = <HTMLInputElement>document.getElementById("channels")!;
    const sampleRateElement = <HTMLInputElement>document.getElementById("sampleRate")!;
    if (  !frequencyElement.reportValidity() ||
-         !amplitudeElement.reportValidity()  ||
+         !amplitudeElement.reportValidity() ||
          !durationElement.reportValidity()  ||
          !channelsElement.reportValidity()  ||
          !sampleRateElement.reportValidity() ) {
       return; }
    const uiParms = <UiParms>{};
-   uiParms.frequency  = frequencyElement.valueAsNumber;
-   uiParms.amplitude  = amplitudeElement.valueAsNumber;
-   uiParms.duration   = durationElement.valueAsNumber;
-   uiParms.channels   = channelsElement.valueAsNumber;
-   uiParms.sampleRate = sampleRateElement.valueAsNumber;
+   uiParms.frequency   = frequencyElement.valueAsNumber;
+   uiParms.amplitude   = amplitudeElement.valueAsNumber;
+   uiParms.duration    = durationElement.valueAsNumber;
+   uiParms.channels    = channelsElement.valueAsNumber;
+   uiParms.sampleRate  = sampleRateElement.valueAsNumber;
    uiParms.wavFileType = Number(getRadioButtonGroupValue("wavFileType"));
    return uiParms; }
 
@@ -49,32 +42,15 @@ function generateSineWaveSignal (frequency: number, amplitude: number, duration:
          channelData[p] = Math.sin(p / sampleRate * omega) * amplitude; }}
    return audioBuffer; }
 
-function openSaveAsDialog (blob: Blob, fileName: string) {
-   const url = URL.createObjectURL(blob);
-   const element = document.createElement("a");
-   element.href = url;
-   element.download = fileName;
-   const clickEvent = new MouseEvent("click");
-   element.dispatchEvent(clickEvent);
-   setTimeout(() => URL.revokeObjectURL(url), 60000);
-   (<any>document).dummySaveAsElementHolder = element; }   // to prevent garbage collection
-
-function generateWavFile() {
+function generateWavFileButton_click() {
    const uiParms = getUiParms();
    if (!uiParms) {
       return; }
    const audioBuffer = generateSineWaveSignal(uiParms.frequency, uiParms.amplitude, uiParms.duration, uiParms.channels, uiParms.sampleRate);
    const wavFileData = WavFileEncoder.encodeWavFileFromAudioBuffer(audioBuffer, uiParms.wavFileType);
-   const blob = new Blob([wavFileData], {type: "audio/wav"});
-   openSaveAsDialog(blob, "test.wav"); }
-
-function generateWavFileButton_click() {
-   try {
-      generateWavFile(); }
-    catch (e) {
-      alert(e); }}
+   openSaveAsDialog(wavFileData, "test.wav", "audio/wav", "wav", "WAV audio file"); }
 
 function startup() {
-   document.getElementById("generateWavFileButton")!.addEventListener("click", generateWavFileButton_click); }
+   document.getElementById("generateWavFileButton")!.addEventListener("click", () => catchError(generateWavFileButton_click)); }
 
 document.addEventListener("DOMContentLoaded", startup);
